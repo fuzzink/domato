@@ -41,7 +41,7 @@ def generate_html_elements(ctx, n):
         ctx['htmlvarctr'] += 1
         varname = 'htmlvar%05d' % ctx['htmlvarctr']
         ctx['htmlvars'].append({'name': varname, 'type': tagtype})
-        ctx['htmlvargen'] += '/* newvar{' + varname + ':' + tagtype + '} */ var ' + varname + ' = document.createElement(\"' + tag + '\"); //' + tagtype + '\n'
+        ctx['htmlvargen'] += '/* newvar{' + varname + ':' + tagtype + '} */ var ' + varname + ' = document.createElement(\"' + tag + '\"); //' + tagtype
 
 
 def add_html_ids(matchobj, ctx):
@@ -50,19 +50,19 @@ def add_html_ids(matchobj, ctx):
         ctx['htmlvarctr'] += 1
         varname = 'htmlvar%05d' % ctx['htmlvarctr']
         ctx['htmlvars'].append({'name': varname, 'type': _HTML_TYPES[tagname]})
-        ctx['htmlvargen'] += '/* newvar{' + varname + ':' + _HTML_TYPES[tagname] + '} */ var ' + varname + ' = document.getElementById(\"' + varname + '\"); //' + _HTML_TYPES[tagname] + '\n'
+        ctx['htmlvargen'] += '/* newvar{' + varname + ':' + _HTML_TYPES[tagname] + '} */ var ' + varname + ' = document.getElementById(\"' + varname + '\"); //' + _HTML_TYPES[tagname]
         return matchobj.group(0) + 'id=\"' + varname + '\" '
     elif tagname in _SVG_TYPES:
         ctx['svgvarctr'] += 1
         varname = 'svgvar%05d' % ctx['svgvarctr']
         ctx['htmlvars'].append({'name': varname, 'type': _SVG_TYPES[tagname]})
-        ctx['htmlvargen'] += '/* newvar{' + varname + ':' + _SVG_TYPES[tagname] + '} */ var ' + varname + ' = document.getElementById(\"' + varname + '\"); //' + _SVG_TYPES[tagname] + '\n'
+        ctx['htmlvargen'] += '/* newvar{' + varname + ':' + _SVG_TYPES[tagname] + '} */ var ' + varname + ' = document.getElementById(\"' + varname + '\"); //' + _SVG_TYPES[tagname]
         return matchobj.group(0) + 'id=\"' + varname + '\" '
     elif tagname in _MATHML_TYPES:
         ctx['mathmlvarctr'] += 1
         varname = 'mathmlvar%05d' % ctx['mathmlvarctr']
         ctx['htmlvars'].append({'name': varname, 'type': _MATHML_TYPES[tagname]})
-        ctx['htmlvargen'] += '/* newvar{' + varname + ':' + _MATHML_TYPES[tagname] + '} */ var ' + varname + ' = document.getElementById(\"' + varname + '\"); //' + _MATHML_TYPES[tagname] + '\n'
+        ctx['htmlvargen'] += '/* newvar{' + varname + ':' + _MATHML_TYPES[tagname] + '} */ var ' + varname + ' = document.getElementById(\"' + varname + '\"); //' + _MATHML_TYPES[tagname]
         return matchobj.group(0) + 'id=\"' + varname + '\" '
     else:
         return matchobj.group(0)
@@ -70,13 +70,13 @@ def add_html_ids(matchobj, ctx):
 
 def generate_function_body(jsgrammar, htmlctx, num_lines):
     js = ''
-    js += 'var fuzzervars = {};\n\n'
-    js += "SetVariable(fuzzervars, window, 'Window');\nSetVariable(fuzzervars, document, 'Document');\nSetVariable(fuzzervars, document.body.firstChild, 'Element');\n\n"
-    js += '//beginjs\n'
+    js += 'var fuzzervars = {}; '
+    js += "SetVariable(fuzzervars, window, 'Window'); SetVariable(fuzzervars, document, 'Document'); SetVariable(fuzzervars, document.body.firstChild, 'Element');"
+    js += '//beginjs'
     js += htmlctx['htmlvargen']
-    js += jsgrammar._generate_code(num_lines, htmlctx['htmlvars'])
-    js += '\n//endjs\n'
-    js += 'var fuzzervars = {};\nfreememory()\n'
+    js += str(jsgrammar._generate_code(num_lines, htmlctx['htmlvars']))
+    js += '//endjs'
+    js += 'var fuzzervars = {}; freememory() '
     return js
 
 

@@ -32,14 +32,14 @@ _N_EVENTHANDLER_LINES = 500
 
 def generate_function_body(jsgrammar, num_lines):
     js = ''
-    js += '//beginjs\n'
+    js += '//beginjs '
     js += jsgrammar._generate_code(num_lines)
-    js += '\n//endjs\n'
-    js += 'CollectGarbage();\n'
+    js += '//endjs '
+    js += 'CollectGarbage(); '
     if random.random() < 0.1:
-      js += 'throw new Error();\n'
+      js += 'throw new Error(); '
     else:
-      js += 'return vars[' + str(random.randint(0,99)) + '];\n'
+      js += 'return vars[' + str(random.randint(0,99)) + ']; '
     return js
 
 def GenerateNewSample(template, jsgrammar):

@@ -301,7 +301,7 @@ class Grammar(object):
             guarded_lines = []
             for line in context['lines']:
                 guarded_lines.append(self._line_guard.replace('<line>', line))
-        return '\n'.join(guarded_lines)
+        return guarded_lines
 
     def _exec_function(self, function_name, attributes, context, ret_val):
         """Executes user-defined python code."""
@@ -801,7 +801,7 @@ class Grammar(object):
                 ln = ln[indent_to_remove:]
             output.append(ln)
 
-        return '\n'.join(output)
+        return output
 
     def _save_function(self, name, source):
         source = self._fix_idents(source)
@@ -919,7 +919,7 @@ class Grammar(object):
 
             try:
                 if in_function:
-                    function_body += cleanline + '\n'
+                    function_body += cleanline
                 elif in_code:
                     self._parse_code_line(cleanline, helper_lines)
                 else:
